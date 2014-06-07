@@ -33,7 +33,7 @@ AZURE_MANAGEMENT_CERTFILE = 'AZURE_MANAGEMENT_CERTFILE'
 AZURE_MANAGEMENT_SUBSCRIPTIONID = 'AZURE_MANAGEMENT_SUBSCRIPTIONID'
 
 # x-ms-version for service management.
-X_MS_VERSION = '2013-06-01'
+X_MS_VERSION = '2013-11-01'
 
 #-----------------------------------------------------------------------------
 # Data classes
@@ -635,6 +635,7 @@ class ConfigurationSet(WindowsAzureData):
         self.role_type = u''
         self.input_endpoints = ConfigurationSetInputEndpoints()
         self.subnet_names = _scalar_list_of(str, 'SubnetName')
+        self.static_virtual_network_ip_address = u''
 
 
 class ConfigurationSetInputEndpoints(WindowsAzureData):
@@ -1328,6 +1329,8 @@ class _XmlSerializer(object):
         for name in configuration.subnet_names:
             xml += _XmlSerializer.data_to_xml([('SubnetName', name)])
         xml += '</SubnetNames>'
+        if configuration.static_virtual_network_ip_address:
+            xml += _XmlSerializer.data_to_xml([('StaticVirtualNetworkIPAddress', configuration.static_virtual_network_ip_address)])
         return xml
 
     @staticmethod
